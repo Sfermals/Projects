@@ -1,0 +1,1 @@
+ build/default/production/MainMiniProjectCode.d  build/default/production/MainMiniProjectCode.p1:  MainMiniProjectCode.c lcd.h

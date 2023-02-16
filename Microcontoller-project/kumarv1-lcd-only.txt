@@ -1,0 +1,33 @@
+
+#include <stdio.h>
+#include <xc.h>
+#include "delays.h"
+#include "lcd.h"	
+unsigned char key,outchar,ADC_value, outchar2;
+char Message1 [ ] = "Turn Right >>>";	  // Defining a 20 char string
+char Message2 [ ] = "<<< Turn Left";	  // Defining a 20 char string
+
+void main(void)
+{
+    
+    int i;
+	lcd_init();						// Initialise LCD module
+
+	
+		lcd_write_cmd(0x80);			// Move cursor to line 1 position 1
+		//for (i = 0; i < 20; i++)		//for 20 char LCD module
+        for (i=0;Message1[i]!=0;i++)
+		{
+			outchar = Message1[i];
+			lcd_write_data(outchar); 	// write character data to LCD
+		}
+        
+        	lcd_write_cmd(0xC0);			// Move cursor to line 2 position 1
+		//for (i = 0; i < 20; i++)		//for 20 char LCD module
+        for (i=0;Message2[i]!=0;i++)
+		{
+			outchar = Message2[i];
+			lcd_write_data(outchar); 	// write character data to LCD
+		}
+
+}
