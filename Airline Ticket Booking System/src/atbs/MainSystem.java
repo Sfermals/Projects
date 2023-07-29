@@ -14,14 +14,23 @@ public class MainSystem {
 		String userID,name, email;
 		int password;
 		
+		
+	
+		
+		
+		
+		
+		
 		//TXT FILES. 
 		File userFile = new File("User.txt");
+		File flightFile = new File("flight.txt");
 		
 		//SCANNERS
 		Scanner s = new Scanner(System.in);
 		
 		//COLLECTIONS
-		ArrayList<User> al = new ArrayList<User>();
+		ArrayList<User> us = new ArrayList<User>();
+		ArrayList<Flight> fl = new ArrayList<Flight>();
 		
 		//OOS/OIS/List Iterator
 		ObjectOutputStream oos = null;
@@ -31,15 +40,51 @@ public class MainSystem {
 		
 		
 		do {
-			System.out.println("\n1.CREATE USER");
-			System.out.println("2.DISPLAY USER");
+			/*System.out.println("\n1.SIGN UP ACCOUNT"); //user
+			System.out.println("2.ADD FLIGHT");  //admin
+			System.out.println("3.DISPLAY FLIGHT"); //user
+			*/
+			System.out.println("========================================");
+			System.out.println("AIRLINE TICKET BOOKING SYSTEM ");
+			System.out.println("========================================");
+			
+			System.out.println("1. Member?.. SIGN UP AS USER");
+			System.out.println("97. add user ");
+			
+			
 			
 			System.out.println("0.EXIT");
-			System.out.println("Enter your choice: ");
+			System.out.println("\nEnter your choice: ");
 			choice = s.nextInt();
 			
 			switch(choice) {
 				case 1: 
+					
+				break;
+				
+				case 2:
+				
+				break;
+				
+				case 3: 
+					
+				break;
+				
+				case 4:
+				
+				break;
+				
+				
+				
+				
+				
+			     //TRYIN TO SETUP ALL THE FEATURES OF THIS PROJECT TO STRUCTURE IT LATER
+				case 95: 
+					System.out.print("bla ...program running bla bla");
+				break; 
+	
+			
+				case 97: //add user 
 					System.out.print("Enter UserID No: ");
 					userID = s.next();
 					
@@ -52,25 +97,91 @@ public class MainSystem {
 					System.out.print("Enter password: ");
 					password = s.nextInt();
 					
-					al.add(new User(userID,name,email,password));
+					us.add(new User(userID,name,email,password));
 					
 					oos = new ObjectOutputStream(new FileOutputStream(userFile)); //then only will write collection into file
-					oos.writeObject(al);
+					oos.writeObject(us);
+					oos.close(); //put object into arraylist then persist it in a txt file
+				break;
+				
+				case 96: //ADD FLIGHT
+					String flightNum,airline,source,destination;
+					int departureTime,arrivalTime,availableSeats;
+					double price;
+	
+					
+					System.out.print("Enter Flightnum No: ");
+					flightNum = s.next();
+					
+					System.out.print("Enter Airlines: ");
+					airline = s.next();
+					
+					System.out.print("Enter source: ");
+					source = s.next();
+					
+					System.out.print("Enter destination: ");
+					destination = s.next();
+					
+					System.out.print("Enter departureTime: ");
+					departureTime = s.nextInt();
+					
+					System.out.print("Enter arrivaltime: ");
+					arrivalTime = s.nextInt();
+					
+					System.out.print("Enter price: ");
+					price = s.nextDouble();
+					
+					System.out.print("Enter availableSeats: ");
+					availableSeats = s.nextInt();
+					
+
+					
+					fl.add(new Flight(flightNum,airline,source,destination,departureTime,arrivalTime,price,availableSeats));
+					
+					oos = new ObjectOutputStream(new FileOutputStream(flightFile)); //then only will write collection into file
+					oos.writeObject(fl);
 					oos.close(); //put object into arraylist then persist it in a txt file
 					
 					
 				break;
-				case 2:
+				
+				
+				
+				// TO DISPLAY FLIGHT DETAILS
+				
+				case 98:
+					if(flightFile.isFile()) { //if userFile exist? then... run the input stream
+						
+						ois = new ObjectInputStream(new FileInputStream(flightFile));
+						fl = (ArrayList<Flight>)ois.readObject();
+						ois.close();
+						
+						System.out.println("-------------------------------------------------------");
+						li = fl.listIterator();
+						while(li.hasNext())
+							System.out.println(li.next());
+						System.out.println("-------------------------------------------------------");
+					}else {
+						System.out.println("File do not exist..!");
+					}
+					break; //==========================================================================
+				
+				case 99:// DISPLAY USER
+				if(userFile.isFile()) { //if userFile exist? then... run the input stream
+					
 					ois = new ObjectInputStream(new FileInputStream(userFile));
-					al = (ArrayList<User>)ois.readObject();
+					us = (ArrayList<User>)ois.readObject();
 					ois.close();
 					
 					System.out.println("-------------------------------------------------------");
-					li = al.listIterator();
+					li = us.listIterator();
 					while(li.hasNext())
 						System.out.println(li.next());
 					System.out.println("-------------------------------------------------------");
-				break;
+				}else {
+					System.out.println("File do not exist..!");
+				}
+				break; //==========================================================================
 			}
 			
 			
