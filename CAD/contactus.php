@@ -458,7 +458,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
 
         <!-- paradise slider js -->
 
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDgJpCPtb0pNhWxJjVo-c3074USAdY1VTI&libraries=places"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=<api_key_here>&libraries=places"></script>
         <script src="assets/js/gmaps.min.js"></script>
         <script>
             
