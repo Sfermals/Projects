@@ -512,23 +512,28 @@
         <!-- paradise slider js -->
 
         <!--
-                <script src="http://maps.google.com/maps/api/js?key=AIzaSyD_tAQD36pKp9v4at5AnpGbvBUsLCOSJx8"></script>
+                <script src="http://maps.google.com/maps/api/js?key=<api_key_here>"></script>
                 <script src="assets/js/gmaps.min.js"></script>
         
-                <script>
-                    function showmap() {
-                        var mapOptions = {
-                            zoom: 8,
-                            scrollwheel: false,
-                            center: new google.maps.LatLng(-34.397, 150.644),
-                            mapTypeId: google.maps.MapTypeId.ROADMAP
-                        };
-                        var map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
-                        $('.mapheight').css('height', '350');
-                        $('.maps_text h3').hide();
-                    }
-        
-                </script>-->
+		      <script>
+			var map = new google.maps.Map(document.querySelector('.ourmap'), {
+			    center: { lat: 1.3083, lng: 103.7773 },
+			    zoom: 15,
+			    zoomControl: true,
+			    panControl: false,
+			    streetViewControl: false,
+			    mapTypeControl: false,
+			    overviewMapControl: false,
+			    clickable: false,
+			    styles: [{ 'stylers': [{ 'hue': 'gray' }, { 'saturation': -100 }, { 'gamma': 0.80 }] }]
+			});
+		
+			var marker = new google.maps.Marker({
+			    position: { lat: 1.3083, lng: 103.7773 },
+			    map: map,
+			    title: 'BAMBU'
+			});
+		    </script>
 
 
 
