@@ -1,20 +1,13 @@
-package atbs;
+import java.io.Serializable;
 
-	public class Ticket {
+public class Ticket implements Serializable{
 		
 		private int ticketNumber;
 		private String passenger;
 		private String flight;
 		private String seatNumber;
 		private String status;
-
-	public Ticket() { //================ blank constructor
-		 ticketNumber = 13390001;
-		 passenger = "Harry Potter";
-		 flight = "Singapore Airline";
-		 seatNumber = "F22";
-		 status = "Pending";
-	}
+	
 	
 	public Ticket(int ticketNumber,String passenger,String flight,String seatNumber,String status) { //================ blank constructor
 		 this.ticketNumber = ticketNumber; 
@@ -64,8 +57,7 @@ package atbs;
 		this.status = status;
 	}
 	
-	
+	public String toString() {
+		return ticketNumber + " " + passenger +" "+ flight +" "+ seatNumber+" " + status;
 }
-
-
-	
+	}

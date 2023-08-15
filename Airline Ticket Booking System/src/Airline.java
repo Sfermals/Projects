@@ -1,17 +1,9 @@
-package atbs;
 
 public class Airline {
-	
 	private String flights;
 	private String users;
 	private int tickets;
-	
-	public Airline() { //================ blank constructor
-		flights = "Singapore Airline";
-		users = "Tom Hanks";
-		tickets = 13390001;
-	}
-	
+		
 	public Airline(String flights, String users, int tickets) { //================ blank constructor
 		this.flights = flights;
 		this.users = users;
@@ -42,6 +34,10 @@ public class Airline {
 		this.tickets = tickets;
 	}
 	
+	public String toString() {
+		return flights  + " " + users +" "+ tickets;
+
+}
 	
 
 }
