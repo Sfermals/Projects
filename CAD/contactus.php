@@ -461,54 +461,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
         <script src="https://maps.googleapis.com/maps/api/js?key=<api_key_here>&libraries=places"></script>
         <script src="assets/js/gmaps.min.js"></script>
         <script>
-            
-            var targetLat = 1.3083;
-            var targetLng = 103.7773;
+	var map = new google.maps.Map(document.querySelector('.ourmap'), {
+	    center: { lat: 1.3083, lng: 103.7773 },
+	    zoom: 15,
+	    zoomControl: true,
+	    panControl: false,
+	    streetViewControl: false,
+	    mapTypeControl: false,
+	    overviewMapControl: false,
+	    clickable: false,
+	    styles: [{ 'stylers': [{ 'hue': 'gray' }, { 'saturation': -100 }, { 'gamma': 0.80 }] }]
+	});
 
-            // Get user's current location (browser's geolocation)
-            navigator.geolocation.getCurrentPosition(function(position) {
-                var userLat = position.coords.latitude;
-                var userLng = position.coords.longitude;
-
-                // Initialize the map
-                var map = new GMaps({
-                    el: '.ourmap',
-                    lat: targetLat,
-                    lng: targetLng,
-                    scrollwheel: false,
-                    zoom: 15,
-                    zoomControl: true,
-                    panControl: false,
-                    streetViewControl: false,
-                    mapTypeControl: false,
-                    overviewMapControl: false,
-                    clickable: false,
-                    styles: [{'stylers': [{'hue': 'gray'}, {saturation: -100}, {gamma: 0.80}]}]
-                });
-
-                // Add a marker for the targeted location (Singapore Polytechnic)
-                map.addMarker({
-                    lat: targetLat,
-                    lng: targetLng,
-                    title: 'Singapore Polytechnic',
-                    infoWindow: {
-                        content: '<p>Singapore Polytechnic</p>'
-                    }
-                });
-
-                // Add a marker for the user's current location
-                map.addMarker({
-                    lat: userLat,
-                    lng: userLng,
-                    title: 'You are here',
-                    infoWindow: {
-                        content: '<p>We are here</p>'
-                    }
-                });
-
-                
-
-            });
+	var marker = new google.maps.Marker({
+	    position: { lat: 1.3083, lng: 103.7773 },
+	    map: map,
+	    title: 'BAMBU'
+	});
         </script>
 
        
