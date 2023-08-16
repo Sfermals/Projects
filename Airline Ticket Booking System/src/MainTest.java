@@ -20,6 +20,8 @@ public class MainTest {
 		
 		
 		do {
+			//==START HERE==//
+			
 			choice2=mainMenu(choice);
 			switch(choice2) {
 			
@@ -72,11 +74,16 @@ public class MainTest {
 						choice4=0;
 						System.exit(0);
 					break;
+					
 					}
 				}
+				break;
+			case 3: GenTix();
+					displayGen();
+				
 //==================================================================================ADMIN ACCESS==================
 			break;//ADMIN ACCESS
-			case 0://================================MANAGE ADMIN====
+			case 0://================================MANAGE ADMIN===================================================
 				choice3=0;
 				System.exit(0);
 			break;
@@ -85,7 +92,66 @@ public class MainTest {
 		}
 		while(choice!=0);
 	}
+
+/*////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
+   AUTHENTICATION LOGIN
+//============================================================================================================================================*/	
+	public static boolean Authentication(boolean auth) throws FileNotFoundException, IOException, ClassNotFoundException {
 	
+	Scanner s = new Scanner(System.in);
+	File userFile = new File("User.txt");
+	File userFileWp = new File("UserWp.txt");
+	ArrayList<User> us = new ArrayList<User>();
+	ArrayList<User> usp = new ArrayList<User>();
+	
+	
+	ObjectOutputStream uoos = null;
+	ObjectInputStream uois = null;
+	ListIterator li = null; //print as list orderly.
+	
+	
+	String userId="",name, email;
+	int password;
+	
+	if(userFileWp.isFile()) {
+		uois = new ObjectInputStream(new FileInputStream(userFileWp));       //read into the file & load it into our collection 
+		usp = (ArrayList<User>)uois.readObject();
+		uois.close();
+		int password1 =-1;	
+		boolean found = false;
+		auth = false;
+		int p1=0;
+		String n1="";
+		System.out.println("-----------------------------------------------------------------------------------");
+		System.out.println("Enter UserId Number: ");
+		userId=s.next();
+		System.out.println("Enter login password: ");
+		password1 = s.nextInt();
+		System.out.println("----------------------------------------------------------------------------------");
+		li = usp.listIterator();
+		while(auth != true) {
+			while(li.hasNext()) {
+				User e = (User) li.next();
+				if(e.getUserId().equals(userId)) { 
+					p1 = e.getPassword();
+					n1 = e.getName();
+				}
+			}//while hasNext
+				if(p1!= password1) {
+				System.out.println("Invalid password, please re-enter password");
+				password1 = s.nextInt();
+				}else if(password1 == 0){
+					System.out.println("Program terminated");
+					System.exit(0);
+				}else {
+					System.out.println("Login Successful.");
+					auth = true;
+				}
+		}//while unless password is right then can go out  
+		System.out.println(auth);
+	}
+	return auth;
+}
 	
 	
 /*////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
@@ -99,8 +165,9 @@ public class MainTest {
 		System.out.println("========================================");
 		
 		System.out.println("1. Create Booking ");
-		System.out.println("2. Update Booking ");
-		System.out.println("3. Delete Booking");
+		System.out.println("2. Display Booking ");
+		System.out.println("3. Update Booking");
+		System.out.println("4. Delete Booking");
 		
 		
 		
@@ -114,10 +181,13 @@ public class MainTest {
 			createTicket();
 		break;
 		case 2:
-			updateTicket();
+			displayTicket();
 		break;
 		case 3:
-			System.out.println("Not Available");
+			updateTicket();
+		break;
+		case 4:
+			//deleteTicket();
 		break;
 		
 		
@@ -169,8 +239,9 @@ public class MainTest {
 		System.out.println("========================================");
 		
 		System.out.println("1. Create Flight ");
-		System.out.println("2. Update Flight ");
-		System.out.println("3. Delete Flight");
+		System.out.println("2. Display Flight");
+		System.out.println("3. Update Flight ");
+		System.out.println("4. Delete Flight");
 		
 		
 		
@@ -189,7 +260,9 @@ public class MainTest {
 		case 3:
 			updateFlight();
 		break;
-		
+		case 4:
+			deleteFlight();
+		break;
 		
 		}
 		
@@ -243,11 +316,37 @@ public class MainTest {
 	
 	
 	
+
 /*////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
                                                                                                                       MENU PROMPTS
-//CREATE USER=================================================================================================================================*/
-	public static int userAccess(int choice) throws FileNotFoundException, IOException {
+//USER MENU=================================================================================================================================*/                                                                                                                      
+	public static int userLogin(int choice) {
 		Scanner s = new Scanner(System.in);
+		
+		System.out.println("\n\n========================================");
+		System.out.println("        Welcome to AA.com                     ");
+		System.out.println("============================================");
+		
+		
+		System.out.println("1.Display flight ");
+		System.out.println("2.Manage Booking ");
+		
+		
+		
+		System.out.println("0.EXIT");
+		System.out.println("\nEnter your choice: ");
+		choice = s.nextInt();
+
+		
+		return choice;
+	}                                                                                                                     
+                                                                                                                      
+//CREATE USER=================================================================================================================================*/
+	public static int userAccess(int choice) throws FileNotFoundException, IOException, ClassNotFoundException {
+		Scanner s = new Scanner(System.in);
+		boolean auth2=false;
+		boolean auth = false;
+		int choiceLogin=0;
 		
 		System.out.println("\n\n========================================");
 		System.out.println("      USER ACCESS ");
@@ -270,6 +369,31 @@ public class MainTest {
 			break;
 			case 2:
 				System.out.println("2. User login ");
+			
+			auth2=Authentication(auth);
+				if(auth2==true) {
+					choiceLogin=userLogin(choice);
+					switch(choiceLogin){
+					case 1:
+						displayFlight();
+						int bookChoice=flightPrompt(choice);
+						switch(bookChoice) {
+						case 1:
+							String flightNum = null;
+							String flightNumber =bookFlight(flightNum);
+							dynamicTicket(flightNumber);
+							
+						break;
+						}
+						
+						
+						
+					break;
+					case 2:
+						//manageBooking();
+					break;
+					}
+				}
 				
 			break;
 			
@@ -312,6 +436,9 @@ public class MainTest {
 		
 		System.out.println("1.User Access ");
 		System.out.println("2.Admin Access ");
+		System.out.println("3.Create generator ");
+		
+		
 		
 		
 		
@@ -336,6 +463,7 @@ public class MainTest {
 		File userFileWp = new File("UserWp.txt");
 		ArrayList<User> us = new ArrayList<User>();
 		ArrayList<User> usp = new ArrayList<User>();
+		
 		
 		
 		ObjectOutputStream uoos = null;
@@ -584,13 +712,63 @@ public class MainTest {
 			}
 	}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
-	
-	
-	
-//DELETE USER=================================================================================================================================	
-	
-	
-	
+
+
+//Book Flight=================================================================================================================================
+	public static String bookFlight(String flightNum) throws FileNotFoundException, IOException, ClassNotFoundException {
+		/* private String flightNumber;
+		    private String airline;
+		    private String source;
+		    private String destination;
+		    private int departureTime;
+		    private int arrivalTime;
+		    private double price;
+		    private int availableSeats;*/
+		
+		String airline,source,destination;
+		int departureTime,arrivalTime,availableSeats;
+		double price;
+		
+		
+		File flightFile = new File("flight.txt");
+		ArrayList<Flight> fl = new ArrayList<Flight>();
+		
+		//OOS/OIS/List Iterator
+		ObjectOutputStream oos = null;
+		ObjectInputStream ois = null;
+		ListIterator li = null; //print as list orderly.
+		Scanner L = new Scanner(System.in);
+		
+		ois = new ObjectInputStream(new FileInputStream(flightFile));       //read into the file & load it into our collection 
+		fl = (ArrayList<Flight>)ois.readObject();
+		ois.close();
+			
+		boolean found = false;
+		System.out.print("\nEnter Flight Number to book flight: ");
+		flightNum = L.next();
+		System.out.print("\nHow many passenger? ");
+		int seat=L.nextInt();
+		System.out.println("---------------------------------------------------------");
+		li = fl.listIterator();
+		while(li.hasNext()) {
+				Flight e = (Flight) li.next();
+				if(e.getFlightNumber().equals(flightNum)) {
+					System.out.println(e.getAvailableSeats());
+					int seatsLeft=e.getAvailableSeats()-seat;
+					e.setAvailableSeats(seatsLeft);  //update seatsleft for particular flight
+					flightNum=e.getFlightNumber();
+					
+					
+					
+					
+					found = true;
+					
+				}	
+		}
+		return flightNum;
+		
+		
+	}
 	
 /*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
                                                                                                                 MANAGE FLIGHT
@@ -689,11 +867,7 @@ public class MainTest {
 		
 		
 	}
-//============================================================================================================================================
-	
-//CREATE FLIGHT===============================================================================================================================	
-	
-//UPDATE FLIGHT===============================================================================================================================
+//=============================================================================================================================================
 	public static void updateFlight() throws FileNotFoundException, IOException, ClassNotFoundException {
 		
 		String flightNum,airline,source,destination;
@@ -730,7 +904,7 @@ public class MainTest {
 //============================================================================================================================================	
 	public static void deleteFlight() throws FileNotFoundException, IOException, ClassNotFoundException {
 		
-	/*	String flightNum,airline,source,destination;
+		String flightNum,airline,source,destination;
 		int departureTime,arrivalTime,availableSeats;
 		double price;
 		
@@ -746,27 +920,27 @@ public class MainTest {
 		displayFlight();
 		
 		
-		if(userFile.isFile()) {
-			uois = new ObjectInputStream(new FileInputStream(userFile));       //read into the file & load it into our collection 
-			us = (ArrayList<User>)uois.readObject();
-			uois.close();
+		if(flightFile.isFile()) {
+			ois = new ObjectInputStream(new FileInputStream(flightFile));       //read into the file & load it into our collection 
+			fl = (ArrayList<Flight>)ois.readObject();
+			ois.close();
 				
 			boolean found = false;
-			System.out.print("\nEnter userID to delete: ");
-			userId = s.next();
+			System.out.print("\nEnter Flight Number to delete: ");
+			flightNum = s.next();
 			System.out.println("---------------------------------------------------------");
-			li = us.listIterator();
+			li = fl.listIterator();
 			while(li.hasNext()) {
-					User e = (User) li.next();
-					if(e.getUserId().equals(userId)) {
+					Flight e = (Flight) li.next();
+					if(e.getFlightNumber().equals(flightNum)) {
 						li.remove();
 						found = true;
 					}	
 			}
 			if(found) {
-				uoos = new ObjectOutputStream(new FileOutputStream(userFile));
-				uoos.writeObject(us);
-				uoos.close();
+				oos = new ObjectOutputStream(new FileOutputStream(flightFile));
+				oos.writeObject(fl);
+				oos.close();
 				System.out.println("Record Deleted Successfully...!");
 			}else {
 				System.out.println("Record Not Found...!");
@@ -774,14 +948,78 @@ public class MainTest {
 			System.out.println("---------------------------------------------------------");
 			}else {
 				System.out.println("File does not exist...!");
-			}	*/
+			}	
 	}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+	
 	
 /*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
                                                                                                                 MANAGE BOOKINGS
-//CREATE BOOKING =================================================================================================================================*/
+//AUTO TICKET FOR USER=================================================================================================================================*/
+                                                                                                              
+                                                                                                         
+	//CREATE TICKET =================================================================================================================================*/
+		public static String dynamicTicket( String flightNumber) throws FileNotFoundException, IOException, ClassNotFoundException {
+			
+			Scanner s = new Scanner(System.in);
+			File ticketFile = new File("ticket.txt");
+			File genFile = new File("generator.txt");
+			ArrayList<Ticket> tix = new ArrayList<Ticket>();
+			ArrayList<generator> gen = new ArrayList<generator>();
+			ObjectOutputStream oos = null;
+			ObjectInputStream ois = null;
+			ListIterator li = null; //print as list orderly.
+			
+			
+			int ticketNumber = 0;
+		 	String passenger = "";
+		 	String flight = "";
+		 	String seatNumber = "";
+			String status;
+			
+			System.out.println(flightNumber);
+			
+			GenTix();
+			
+			ois = new ObjectInputStream(new FileInputStream(genFile));       
+			gen = (ArrayList<generator>)ois.readObject();
+			ois.close();
+
+			li = gen.listIterator();
+			while(li.hasNext()) {
+				generator e = (generator) li.next();
+				ticketNumber = e.getTicketNumber();
+				seatNumber = e.getSeatNumber();
+			}
+
+			ois = new ObjectInputStream(new FileInputStream(ticketFile));       
+			tix = (ArrayList<Ticket>)ois.readObject();
+			ois.close();
+
+			li = tix.listIterator();
+			while(li.hasNext()) {
+				Ticket e = (Ticket) li.next();
+				passenger = e.getPassenger();
+				flight=e.getFlight();
+			}
+
+			
+			status = "booked";
+			
+			tix.add(new Ticket(ticketNumber,passenger,flight,seatNumber,status));
+			
+			oos = new ObjectOutputStream(new FileOutputStream(ticketFile)); //then only will write collection into file
+			oos.writeObject(tix);
+			oos.close(); //put object into arraylist then persist it in a txt file
+			System.out.println("Ticket generated succesfully");
+			
+			return flightNumber;
+			
+		}                                                                                                                
+                                                                                                                
+//CREATE TICKET =================================================================================================================================*/
 	public static void createTicket() throws FileNotFoundException, IOException {
 		
 		Scanner s = new Scanner(System.in);
@@ -797,35 +1035,77 @@ public class MainTest {
 	 	String flight;
 	 	String seatNumber;
 		String status;
+		
+		System.out.println("Enter how many user you wish to add: ");
+		int m = s.nextInt();
+		for(int i=0;i<m;i++) {
 	
 	
-		System.out.print("Enter ticketNumber: ");
+		System.out.print("Enter Ticket Number: ");
 		ticketNumber = s.nextInt();
 		
 		System.out.print("Enter Passenger: ");
 		passenger = s.next();
 		
-		System.out.print("Enter flight: ");
+		System.out.print("Enter Flight: ");
 		flight = s.next();
 		
-		System.out.print("Enter seatNumber: ");
+		System.out.print("Enter Seat Number: ");
 		seatNumber = s.next();
 		
-		System.out.print("Enter status: ");
+		System.out.print("Enter Status: ");
 		status = s.next();
 		
 		tix.add(new Ticket(ticketNumber,passenger,flight,seatNumber,status));
-		
+		}
 		oos = new ObjectOutputStream(new FileOutputStream(ticketFile)); //then only will write collection into file
 		oos.writeObject(tix);
 		oos.close(); //put object into arraylist then persist it in a txt file
 		
 	}
-//============================================================================================================================================
-//CREATE TICKET===============================================================================================================================
+//DISPLAY TICKET =================================================================================================================================*/
+	public static void displayTicket() throws FileNotFoundException, IOException, ClassNotFoundException {
+			
+		Scanner s = new Scanner(System.in);
+		File ticketFile = new File("ticket.txt");
+		ArrayList<Ticket> tix = new ArrayList<Ticket>();
+		ObjectOutputStream oos = null;
+		ObjectInputStream ois = null;
+		ListIterator li = null; //print as list orderly.
+		
+		
+		int ticketNumber;
+	 	String passenger;
+	 	String flight;
+	 	String seatNumber;
+		String status;
 	
+			
+			if(ticketFile.isFile()) {
+				ois = new ObjectInputStream(new FileInputStream(ticketFile));       
+				tix = (ArrayList<Ticket>)ois.readObject();
+				ois.close();
+				
+																													
+			//    	return "  " + ticketNumber  + "     " +passenger +"     "+ flight +"     "+seatNumber +"     "+status+" 
+			System.out.println("============================================================================================================================================================");
+			System.out.println(" ticketNumber            passenger            flight         seatNumber         status         ");
+			System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------");
+			li = tix.listIterator();
+			while(li.hasNext())
+					System.out.println(li.next());
+			
+			System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------");
+			}else {
+				System.out.println("File does not exist...!");
+			}
+			
+			
+			
+		}
 //UPDATE TICKET===============================================================================================================================
 	public static void updateTicket() throws FileNotFoundException, IOException, ClassNotFoundException {
+
 		
 		Scanner s = new Scanner(System.in);
 		File ticketFile = new File("ticket.txt");
@@ -858,15 +1138,60 @@ public class MainTest {
 			System.out.println("File do not exist..!");
 		}
 	}
+//DELETE TICKET===============================================================================================================================
+	public static void deleteTicket() throws FileNotFoundException, IOException, ClassNotFoundException {
+		
+		int ticketNumber;
+		String passenger;
+		String flight;
+		String seatNumber;
+		String status;;
+		
+		Scanner s = new Scanner(System.in);
+		File ticketFile = new File("ticket.txt");
+		ArrayList<Ticket> tix = new ArrayList<Ticket>();
+		
+		//OOS/OIS/List Iterator
+		ObjectOutputStream oos = null;
+		ObjectInputStream ois = null;
+		ListIterator li = null; //print as list orderly.
+		
+		displayTicket();
+		
+		
+		if(ticketFile.isFile()) {
+			ois = new ObjectInputStream(new FileInputStream(ticketFile));       //read into the file & load it into our collection 
+			tix = (ArrayList<Ticket>)ois.readObject();
+			ois.close();
+				
+			boolean found = false;
+			System.out.print("\nEnter Ticket Number to delete: ");
+			ticketNumber = s.nextInt();
+			System.out.println("---------------------------------------------------------");
+			li = tix.listIterator();
+			while(li.hasNext()) {
+					Ticket e = (Ticket) li.next();
+					if(e.getTicketNumber()==(ticketNumber)) {
+						li.remove();
+						found = true;
+					}	
+			}
+			if(found) {
+				oos = new ObjectOutputStream(new FileOutputStream(ticketFile));
+				oos.writeObject(tix);
+				oos.close();
+				System.out.println("Record Deleted Successfully...!");
+			}else {
+				System.out.println("Record Not Found...!");
+				}
+			System.out.println("---------------------------------------------------------");
+			}else {
+				System.out.println("File does not exist...!");
+			}	
+	}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-	
-	
-	
-	
-//UPDATE TICKET===============================================================================================================================
-	
-	
+
 	
 	
 	
@@ -904,9 +1229,6 @@ public class MainTest {
 			oos.close(); //put object into arraylist then persist it in a txt file
 	}
 //============================================================================================================================================
-//CREATE ADMIN================================================================================================================================
-
-//UPDATE ADMIN================================================================================================================================
 	public static void updateAdmin() throws FileNotFoundException, IOException, ClassNotFoundException {
 		
 		Scanner s = new Scanner(System.in);
@@ -932,9 +1254,187 @@ public class MainTest {
 		}
 	}
 //============================================================================================================================================
-//UPDATE ADMIN================================================================================================================================
-}
 
+	
+	
+	//Flight Prompt=================================================================================================================================
+	public static int flightPrompt(int choice) {
+			//bookflight
+			//updateflight
+			//createticket
+			//displayticket
+			
+			Scanner s = new Scanner(System.in);
+			int choiceLogin=0;
+			
+			System.out.println("\n\n====================================");
+			System.out.println("      BOOK / UPDATE FLIGHT ");
+			System.out.println("========================================");
+			
+			System.out.println("1. Book New Flight ");
+			System.out.println("2. Update Flight ");
+			
+			
+			
+			System.out.println("0.EXIT");
+			System.out.println("\nEnter your choice: ");
+			choice = s.nextInt();
+			
+			
+			
+			
+			return choice;
+		}
+	
+	
+	
+		
+//CREATE GEN =================================================================================================================================*/
+	public static void createGen() throws FileNotFoundException, IOException {
+		
+		Scanner s = new Scanner(System.in);
+		File genFile = new File("generator.txt");
+		ArrayList<generator> gen = new ArrayList<generator>();
+		ObjectOutputStream oos = null;
+		ObjectInputStream ois = null;
+		ListIterator li = null; //print as list orderly.
+		
+		
+		int ticketNumber;
+		String seatNumber;
+		int num;
+		char sect;
+		
+		ticketNumber=188001;
+		seatNumber="A10";
+		num = 10;
+		sect = 'A';
+
+		
+		gen.add(new generator(ticketNumber,seatNumber,num,sect));
+		
+		oos = new ObjectOutputStream(new FileOutputStream(genFile)); //then only will write collection into file
+		oos.writeObject(gen);
+		oos.close(); //put object into arraylist then persist it in a txt file
+		
+	}		
+
+//DISPLAY GEN =================================================================================================================================*/
+	public static void displayGen() throws FileNotFoundException, IOException, ClassNotFoundException {
+			
+			Scanner s = new Scanner(System.in);
+			File genFile = new File("generator.txt");
+			ArrayList<generator> gen = new ArrayList<generator>();
+			ObjectOutputStream oos = null;
+			ObjectInputStream ois = null;
+			ListIterator li = null; //print as list orderly.
+			
+			
+			int ticketNumber;
+			String seatNumber;
+			int num;
+			char sect;
+			
+			if(genFile.isFile()) {
+				ois = new ObjectInputStream(new FileInputStream(genFile));       
+				gen = (ArrayList<generator>)ois.readObject();
+				ois.close();
+				
+
+			li = gen.listIterator();
+			while(li.hasNext())
+					System.out.println(li.next());
+			
+			System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------");
+			}else {
+				System.out.println("File does not exist...!");
+			}
+
+		}
+//DISPLAY GEN =================================================================================================================================*/
+	public static void GenTix() throws FileNotFoundException, IOException, ClassNotFoundException {
+			Scanner s = new Scanner(System.in);
+			File genFile = new File("generator.txt");
+			ArrayList<generator> gen = new ArrayList<generator>();
+			ObjectOutputStream oos = null;
+			ObjectInputStream ois = null;
+			ListIterator li = null; //print as list orderly.
+			
+			
+			int ticketNumber;
+			String seatNumber;
+			int num;
+			char sect;
+			
+			
+			File ticketFile = new File("ticket.txt");
+			ArrayList<Ticket> tix = new ArrayList<Ticket>();
+			
+
+			
+				
+						if(genFile.isFile()) { //if userFile exist? then... run the input stream
+							
+							ois = new ObjectInputStream(new FileInputStream(genFile));
+							gen = (ArrayList<generator>)ois.readObject();
+							ois.close();
+							
+							System.out.println("-------------------------------------------------------");
+							li = gen.listIterator();
+							while(li.hasNext())
+								System.out.println(li.next());
+							System.out.println("-------------------------------------------------------");
+						}else {
+							System.out.println("File do not exist..!");
+						}
+						
+						///////
+						if(genFile.isFile()) {
+							ois = new ObjectInputStream(new FileInputStream(genFile));       //read into the file & load it into our collection 
+							gen= (ArrayList<generator>)ois.readObject();
+							ois.close();
+								
+							boolean found = false;
+							
+							
+							li = gen.listIterator();
+							while(li.hasNext()) {
+									generator e = (generator) li.next();
+									
+									ticketNumber=e.getTicketNumber()+1;			
+									num=e.getNum()+1;
+									sect=(char) (e.getSect()+1);
+									seatNumber=""+sect+""+num;	
+								
+								li.set(new generator(ticketNumber,seatNumber,num,sect));
+										
+
+										found = true;
+									
+							}
+							if(found) {
+								oos = new ObjectOutputStream(new FileOutputStream(genFile));
+								oos.writeObject(gen);
+								oos.close();
+								System.out.println("---------------------------------------------------------");
+								System.out.println("Record Updated Successfully...!");
+							}else {
+								System.out.println("Record Not Found...!");
+								}
+							System.out.println("---------------------------------------------------------");
+							}else {
+								System.out.println("File does not exist...!");
+							}
+						
+						
+						
+						
+						
+						
+						
+	}
+		
+}
 	
 
 
