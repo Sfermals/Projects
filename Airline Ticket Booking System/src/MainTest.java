@@ -14,81 +14,139 @@ public class MainTest {
 		
 		int choice = -1;
 		Scanner s = new Scanner(System.in);
-		int choice2,choice3=-1,choice4=-1,out=-1;
+		int choice2 = 0,choice3=-1,choice4=-1,out=-1;
+		boolean auth2=false;
+		boolean auth = false;
+		int choiceLogin=0;
+		int bookChoice = 0;
 		
 		
 		
 		
 		do {
-			//==START HERE==//
 			
-			choice2=mainMenu(choice);
-			switch(choice2) {
 			
-			case 1://USER ACCESS
-				while(choice3!=0){
-//===================================================================================USER ACCESS==================
-					choice3=userAccess(choice2);
-				}
-//===================================================================================USER ACCESS==================
-			break;//USER ACCESS
 			
-			case 2://ADMIN ACCESS
-				while(choice3!=0){
-//==================================================================================ADMIN ACCESS==================
-					choice3=adminAccess(choice2);
-					switch(choice3) {
-					case 1://==============================MANAGE FLIGHT====
-						while(choice4!=0) {
-							choice4=manageFlight(choice3);
-							//CREATE FLIGHT
-							//UPDATE FLIGHT
-							//DELETE FLIGHT
-						}
-					break;
-					case 2://================================MANAGE USER====
-						while(choice4!=0) {
-							choice4=manageUser(choice3);
-							//CREATE USER
-							//UPDATE USER
-							//DELETE USER
-						}
-					break;
-					case 3://================================MANAGE BOOKINGS====
-						while(choice4!=0) {
-							choice4=manageBooking(choice3);
-							//CREATE BOOKING
-							//UPDATE BOOKING
-							//DELETE BOOKING
-						}
-					break;
-					case 4://================================MANAGE ADMIN====
-						while(choice4!=0) {
-							choice4=manageAdmin(choice3);
-							//CREATE ADMIN
-							//UPDATE ADMIN
-							//DELETE ADMIN
-						}
-					break;
-					case 0://================================MANAGE ADMIN====
-						choice4=0;
-						System.exit(0);
-					break;
+			System.out.println("\n\n========================================");
+			System.out.println("      AIRLINE TICKET BOOKING SYSTEM ");
+			System.out.println("========================================");
+			
+			System.out.println("1.User Access ");
+			System.out.println("2.Admin Access ");
+			System.out.println("3.Create generator ");
+			
+			
+			
+			
+			
+			System.out.println("0.EXIT");
+			System.out.println("\nEnter your choice: ");
+			choice = s.nextInt();
+			
+			switch(choice) {
+				case 1://USER ACCESS
+					System.out.println("\n\n========================================");
+					System.out.println("      USER ACCESS ");
+					System.out.println("========================================");
 					
+					System.out.println("1. Create User ");
+					System.out.println("2. User login ");
+					
+					
+					
+					System.out.println("0.EXIT");
+					System.out.println("\nEnter your choice: ");
+					choice = s.nextInt();
+					
+					switch(choice) {
+	//CREATE USER====================================================================================================================
+						case 1: //CREATE USER
+							System.out.println("1. Create User ");
+							createUser();
+						break;
+	//USER lOGIN====================================================================================================================
+						case 2: //USER LOGIN
+							auth2=Authentication(auth);
+							if(auth2==true) {
+								userLogin(choice);
+								displayFlight();
+								bookChoice=flightPrompt(choice);
+							}
+							
+							switch(bookChoice) {
+							//===================================================
+								case 1://book new flight
+									String flightNum = null;
+									
+									String flightNumber =bookFlight(flightNum);
+									dynamicTicket(flightNumber);
+								break;
+								//===============================================
+								case 2://update flight
+									
+								break;
+							//===================================================
+							}
+							
+						break;
+	//======================================================================================================================
 					}
-				}
 				break;
-			case 3: GenTix();
-					displayGen();
-				
-//==================================================================================ADMIN ACCESS==================
-			break;//ADMIN ACCESS
-			case 0://================================MANAGE ADMIN===================================================
-				choice3=0;
-				System.exit(0);
-			break;
+				case 2://ADMIN ACCESS
+					System.out.println("\n\n========================================");
+					System.out.println("     ADMIN ACCESS ");
+					System.out.println("========================================");
+					
+					
+					System.out.println("1.Manage Flight ");
+					System.out.println("2.Manage User ");
+					System.out.println("3.Manage Booking ");
+					System.out.println("4.Manage Admin ");
+					
+					
+					
+					System.out.println("0.EXIT");
+					System.out.println("\nEnter your choice: ");
+					choice = s.nextInt();
+					
+					switch(choice) {
+				        case 1://==============================MANAGE FLIGHT====
+				        	manageFlight();
+				                //CREATE FLIGHT
+				                //UPDATE FLIGHT
+				                //DELETE FLIGHT
+				            
+				        break;
+				        case 2://================================MANAGE USER====
+				        	manageUser();
+				                //CREATE USER
+				                //UPDATE USER
+				                //DELETE USER
+				            
+				        break;
+				        case 3://================================MANAGE BOOKINGS====
+				        	manageBooking();
+				                //CREATE BOOKING
+				                //UPDATE BOOKING
+				                //DELETE BOOKING
+				            
+				        break;
+				        case 4://================================MANAGE ADMIN====
+				        	manageAdmin();
+				                //CREATE ADMIN
+				                //UPDATE ADMIN
+				                //DELETE ADMIN
+				            
+				        break;
+				        case 0://================================MANAGE ADMIN====
+
+				        break;
+			        
+			        }
+				break;
 			}
 			
+						
 		}
 		while(choice!=0);
 	}
@@ -157,8 +215,9 @@ public class MainTest {
 /*////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
                                                                                                                         MANAGERS 
 //============================================================================================================================================*/	
-	public static int manageBooking(int choice) throws FileNotFoundException, IOException, ClassNotFoundException {
+	public static void manageBooking() throws FileNotFoundException, IOException, ClassNotFoundException {
 		Scanner s = new Scanner(System.in);
+		int choice=0;
 		
 		System.out.println("\n\n========================================");
 		System.out.println("     MANAGE BOOKING ");
@@ -193,12 +252,13 @@ public class MainTest {
 		
 		}
 		
-		return choice;
+		
 		
 	}
 //=============================================================================================================================================	
-	public static int manageAdmin(int choice) throws FileNotFoundException, IOException, ClassNotFoundException {
+	public static void manageAdmin() throws FileNotFoundException, IOException, ClassNotFoundException {
 		Scanner s = new Scanner(System.in);
+		int choice=0;
 		
 		System.out.println("\n\n========================================");
 		System.out.println("     MANAGE ADMIN ");
@@ -228,11 +288,12 @@ public class MainTest {
 		
 		}
 		
-		return choice;
+		
 	}
 //=============================================================================================================================================	
-	public static int manageFlight(int choice) throws FileNotFoundException, IOException, ClassNotFoundException {
+	public static void manageFlight() throws FileNotFoundException, IOException, ClassNotFoundException {
 		Scanner s = new Scanner(System.in);
+		int choice=0;
 		
 		System.out.println("\n\n========================================");
 		System.out.println("     MANAGE FLIGHT ");
@@ -266,11 +327,13 @@ public class MainTest {
 		
 		}
 		
-		return choice;
+		
 	}
 //=============================================================================================================================================	
-	public static int manageUser(int choice) throws FileNotFoundException, IOException, ClassNotFoundException {
+	public static void manageUser() throws FileNotFoundException, IOException, ClassNotFoundException {
+
 		Scanner s = new Scanner(System.in);
+		int choice=0;
 		
 		System.out.println("\n\n========================================");
 		System.out.println("     MANAGE USER ");
@@ -309,7 +372,7 @@ public class MainTest {
 		
 		}
 		
-		return choice;
+		
 	}
 //=============================================================================================================================================	
 	
@@ -317,10 +380,9 @@ public class MainTest {
 	
 	
 
-/*////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
-                                                                                                                      MENU PROMPTS
-//USER MENU=================================================================================================================================*/                                                                                                                      
-	public static int userLogin(int choice) {
+    public static int userLogin(int choice) {
+	
+
 		Scanner s = new Scanner(System.in);
 		
 		System.out.println("\n\n========================================");
@@ -341,68 +403,7 @@ public class MainTest {
 		return choice;
 	}                                                                                                                     
                                                                                                                       
-//CREATE USER=================================================================================================================================*/
-	public static int userAccess(int choice) throws FileNotFoundException, IOException, ClassNotFoundException {
-		Scanner s = new Scanner(System.in);
-		boolean auth2=false;
-		boolean auth = false;
-		int choiceLogin=0;
-		
-		System.out.println("\n\n========================================");
-		System.out.println("      USER ACCESS ");
-		System.out.println("========================================");
-		
-		System.out.println("1. Create User ");
-		System.out.println("2. User login ");
-		
-		
-		
-		System.out.println("0.EXIT");
-		System.out.println("\nEnter your choice: ");
-		choice = s.nextInt();
-		
-		switch(choice) {
-		
-			case 1:
-				System.out.println("1. Create User ");
-				createUser();
-			break;
-			case 2:
-				System.out.println("2. User login ");
-			
-			auth2=Authentication(auth);
-				if(auth2==true) {
-					choiceLogin=userLogin(choice);
-					switch(choiceLogin){
-					case 1:
-						displayFlight();
-						int bookChoice=flightPrompt(choice);
-						switch(bookChoice) {
-						case 1:
-							String flightNum = null;
-							String flightNumber =bookFlight(flightNum);
-							dynamicTicket(flightNumber);
-							
-						break;
-						}
-						
-						
-						
-					break;
-					case 2:
-						//manageBooking();
-					break;
-					}
-				}
-				
-			break;
-			
-			case 0:
-				choice=0;
-			break;
-		}
-		return choice;
-	}
+
 //=============================================================================================================================================	
 	public static int adminAccess(int choice) {
 		Scanner s = new Scanner(System.in);
@@ -464,48 +465,58 @@ public class MainTest {
 		ArrayList<User> us = new ArrayList<User>();
 		ArrayList<User> usp = new ArrayList<User>();
 		
-		
-		
 		ObjectOutputStream uoos = null;
 		ObjectInputStream uois = null;
 		ListIterator li = null; //print as list orderly.
-		
-		
 		String userId,name, email;
 		int password;
 		
-		System.out.println("Enter how many user you wish to add: ");
-		int m = s.nextInt();
-		for(int i=0;i<m;i++) {
+		if(userFile.isFile()) {
 		
-			System.out.print("\n\nEnter UserID No: ");
-			userId = s.next();
-			
-			System.out.print("Enter Name: ");
-			name = s.next();
-			
-			System.out.print("Enter Email: ");
-			email = s.next();
-			
-			System.out.print("Enter password: ");
-			password = s.nextInt();
-			
-			us.add(new User(userId,name,email)); //without password
-			usp.add(new User(userId,name,email,password));
-		}
+		System.out.println("=================================================================================");
+		System.out.println("                            SIGN UP");
+		System.out.println("=================================================================================");
 		
+		System.out.print("\n\nEnter UserID No: ");
+		userId = s.next();
+		
+		System.out.print("Enter Name: ");
+		name = s.next();
+		
+		System.out.print("Enter Email: ");
+		email = s.next();
+		
+		
+		
+		System.out.println("=================================================================================");
+		System.out.println("              Great Mr/Ms "+name+"!, Sign up successful! you are now a member!               ");
+		System.out.println("=================================================================================");
+		
+		
+		System.out.print("\nOne last thing! Complete your setup with a new password for your account! \n\npassword: ");
+		password = s.nextInt();
+		
+		
+		us.add(new User(userId,name,email)); //without password
+     
+		usp.add(new User(userId,name,email,password));
+		
+
 		uoos = new ObjectOutputStream(new FileOutputStream(userFile)); //then only will write collection into file
 		uoos.writeObject(us);
 		uoos.close(); //put object into arraylist then persist it in a txt file
 		
 		uoos = new ObjectOutputStream(new FileOutputStream(userFileWp));
 		uoos.writeObject(usp);
-		uoos.close(); 
+		uoos.close();
+		}
+		
+	
+		
+		
+		 
 		
 	}
-//=============================================================================================================================================	
-
-//DISPLAY USER=================================================================================================================================
 	public static void displayUser() throws FileNotFoundException, IOException, ClassNotFoundException {
 			
 			String userId="",name, email;
@@ -542,7 +553,6 @@ public class MainTest {
 			
 			
 		}
-//============================================================================================================================================
 	
 //UPDATE USER=================================================================================================================================		
 	public static void updateUser() throws FileNotFoundException, IOException, ClassNotFoundException {
@@ -753,7 +763,7 @@ public class MainTest {
 		while(li.hasNext()) {
 				Flight e = (Flight) li.next();
 				if(e.getFlightNumber().equals(flightNum)) {
-					System.out.println(e.getAvailableSeats());
+					
 					int seatsLeft=e.getAvailableSeats()-seat;
 					e.setAvailableSeats(seatsLeft);  //update seatsleft for particular flight
 					flightNum=e.getFlightNumber();
@@ -901,7 +911,6 @@ public class MainTest {
 		}
 		
 	}
-//============================================================================================================================================	
 	public static void deleteFlight() throws FileNotFoundException, IOException, ClassNotFoundException {
 		
 		String flightNum,airline,source,destination;
@@ -960,14 +969,20 @@ public class MainTest {
 //AUTO TICKET FOR USER=================================================================================================================================*/
                                                                                                               
                                                                                                          
-	//CREATE TICKET =================================================================================================================================*/
-		public static String dynamicTicket( String flightNumber) throws FileNotFoundException, IOException, ClassNotFoundException {
+	//TICKET =================================================================================================================================*/
+	public static void dynamicTicket( String flightNumber) throws FileNotFoundException, IOException, ClassNotFoundException {
 			
 			Scanner s = new Scanner(System.in);
-			File ticketFile = new File("ticket.txt");
+			File userFile = new File("User.txt");
 			File genFile = new File("generator.txt");
-			ArrayList<Ticket> tix = new ArrayList<Ticket>();
+			File flightFile = new File("flight.txt");
+			File ticketFile = new File("ticket.txt");
+			ArrayList<Flight> fl = new ArrayList<Flight>();
 			ArrayList<generator> gen = new ArrayList<generator>();
+			ArrayList<User> us = new ArrayList<User>();
+			ArrayList<Ticket> tix = new ArrayList<Ticket>();
+			
+			
 			ObjectOutputStream oos = null;
 			ObjectInputStream ois = null;
 			ListIterator li = null; //print as list orderly.
@@ -975,13 +990,17 @@ public class MainTest {
 			
 			int ticketNumber = 0;
 		 	String passenger = "";
+		 	String passenger1 = "";
 		 	String flight = "";
 		 	String seatNumber = "";
 			String status;
+			String name="";
 			
-			System.out.println(flightNumber);
+			
 			
 			GenTix();
+			
+			if(genFile.isFile()) {
 			
 			ois = new ObjectInputStream(new FileInputStream(genFile));       
 			gen = (ArrayList<generator>)ois.readObject();
@@ -993,18 +1012,50 @@ public class MainTest {
 				ticketNumber = e.getTicketNumber();
 				seatNumber = e.getSeatNumber();
 			}
-
-			ois = new ObjectInputStream(new FileInputStream(ticketFile));       
-			tix = (ArrayList<Ticket>)ois.readObject();
+			}else {
+				System.out.println("File does not exist...!");
+			}
+			
+			if(flightFile.isFile()) {
+			
+			ois = new ObjectInputStream(new FileInputStream(flightFile));       
+			fl = (ArrayList<Flight>)ois.readObject();
 			ois.close();
-
-			li = tix.listIterator();
+			
+			li = fl.listIterator();
 			while(li.hasNext()) {
-				Ticket e = (Ticket) li.next();
-				passenger = e.getPassenger();
-				flight=e.getFlight();
+				Flight e = (Flight) li.next();
+				flightNumber=e.getFlightNumber();
+				
 			}
 
+			}else {
+				System.out.println("File does not exist...!");
+			}
+			System.out.println("please confirm your userID: ");
+			String userId=s.next();
+			
+			System.out.println("");
+			if(userFile.isFile()) {
+				
+				ois = new ObjectInputStream(new FileInputStream(userFile));       
+				us = (ArrayList<User>)ois.readObject();
+				ois.close();
+				
+				li = us.listIterator();
+				while(li.hasNext()) {
+					User e = (User) li.next();
+					if(e.getUserId().equals(userId)) {
+					name=e.getName();
+					}
+					
+				}
+
+				}else {
+					System.out.println("File does not exist...!");
+				}
+			passenger=name;
+			flight=flightNumber;
 			
 			status = "booked";
 			
@@ -1015,11 +1066,9 @@ public class MainTest {
 			oos.close(); //put object into arraylist then persist it in a txt file
 			System.out.println("Ticket generated succesfully");
 			
-			return flightNumber;
+			
 			
 		}                                                                                                                
-                                                                                                                
-//CREATE TICKET =================================================================================================================================*/
 	public static void createTicket() throws FileNotFoundException, IOException {
 		
 		Scanner s = new Scanner(System.in);
@@ -1196,7 +1245,7 @@ public class MainTest {
 	
 	
 	
-	
+	//=================================================================================================================================*/
 /*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////.	
                                                                                                                 MANAGE ADMIN
 //CREATE ADMIN=================================================================================================================================*/
@@ -1371,22 +1420,6 @@ public class MainTest {
 			ArrayList<Ticket> tix = new ArrayList<Ticket>();
 			
 
-			
-				
-						if(genFile.isFile()) { //if userFile exist? then... run the input stream
-							
-							ois = new ObjectInputStream(new FileInputStream(genFile));
-							gen = (ArrayList<generator>)ois.readObject();
-							ois.close();
-							
-							System.out.println("-------------------------------------------------------");
-							li = gen.listIterator();
-							while(li.hasNext())
-								System.out.println(li.next());
-							System.out.println("-------------------------------------------------------");
-						}else {
-							System.out.println("File do not exist..!");
-						}
 						
 						///////
 						if(genFile.isFile()) {
@@ -1417,7 +1450,7 @@ public class MainTest {
 								oos.writeObject(gen);
 								oos.close();
 								System.out.println("---------------------------------------------------------");
-								System.out.println("Record Updated Successfully...!");
+								System.out.println("Loading...Generating your ticket..please hold on.. ");
 							}else {
 								System.out.println("Record Not Found...!");
 								}
