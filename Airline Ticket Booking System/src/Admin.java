@@ -18,6 +18,12 @@ public class Admin implements Serializable{
 			this.username = username;
 			this.password = password;
 	   }
+	   public Admin( int adminID, String username) {  //constructor with attributes 
+			
+			this.adminID = adminID;
+			this.username = username;
+	   }
+	  
 	
 		public int getAdminID() {
 		return adminID;
@@ -44,7 +50,8 @@ public class Admin implements Serializable{
 		}
 		   
 		public String toString() {
-			return adminID  + " " + username +" "+ password +" ";
+			return "    "+adminID  + "           " + username +" ";
 		}
+		
 
 }
